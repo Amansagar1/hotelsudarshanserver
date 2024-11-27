@@ -18,3 +18,4 @@ Thumbs.db  # Windows
 
 # Environment files
 # .env
+.vercel
