@@ -20,18 +20,20 @@ const mongoose = require('mongoose');
 
 
 // models/Room.js
+
+
 const roomSchema = new mongoose.Schema({
   title: String,
   price: String,
   rating: Number,
   available: { type: Boolean, required: true },
-  bookingstatus: { type: Boolean, required: true },
+  bookingStatus: { type: Boolean, default: false },
   description: String,
   features: [String],
   amenities: [String],
   facilities: [String],
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('RoomDetails', roomSchema);

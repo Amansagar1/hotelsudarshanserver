@@ -1,11 +1,14 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const Booking = require('./models/Booking');
+
+// Import Routes
+const bookingRoutes = require('./routes/bookingRoutes');
+const roomDetailsRoutes = require('./routes/roomdetails');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -14,63 +17,23 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-
-
+// MongoDB Connection
 const mongoURI = process.env.MONGODB_URI;
 
 if (!mongoURI) {
   console.error("MongoDB URI is missing.");
-  process.exit(1); 
+  process.exit(1);
 }
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
+
+mongoose.connect(mongoURI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
-  console.log("MONGODB_URI:", process.env.MONGODB_URI);
 
-// In your backend (e.g., Express app)
-app.post('/api/book', async (req, res) => {
-  try {
-    const bookingDetails = req.body; 
-    console.log(bookingDetails); 
-
-    // Saving booking to the database using Mongoose
-    const newBooking = new Booking(bookingDetails);
-    const savedBooking = await newBooking.save();
-
-    if (savedBooking) {
-      res.status(201).json({
-        success: true,
-        message: 'Booking confirmed!',
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: 'Booking failed!',
-      });
-    }
-  } catch (error) {
-    console.error('Error booking room:', error); 
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
-
-
-
-
-
-//---------//
-const roomDetailsRoutes = require('./routes/roomdetails');
+// Routes
+app.use('/api/book', bookingRoutes);
 app.use('/api/roomdetails', roomDetailsRoutes);
 
-//---------//
-const bookingRoutes = require('./routes/bookingRoutes');
-app.use('/api/book', bookingRoutes);
-
-
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

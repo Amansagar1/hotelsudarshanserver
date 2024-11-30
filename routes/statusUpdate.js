@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const express = require('express');
 const mongoose = require('mongoose');
-const RoomDetails = require('../models/RoomDetails');  // Ensure this model is imported correctly
+const RoomDetails = require('../models/RoomDetails');  
 const router = express.Router();
 
 // This route will handle the PUT request for updating room status
 router.put('/:roomId/status/update', async (req, res) => {
   try {
-    const { roomId } = req.params;  // Extract roomId from the URL parameter
-    const { available, bookingstatus } = req.body;  // Expecting these fields in the body
+    const { roomId } = req.params; 
+    const { available, bookingstatus } = req.body; 
 
     // Validate the roomId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
