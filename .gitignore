@@ -17,5 +17,5 @@
 Thumbs.db  # Windows
 
 # Environment files
-# .env
+.env
 .vercel
