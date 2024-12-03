@@ -34,9 +34,17 @@ app.use('/api/book', bookingRoutes);
 app.use('/api/roomdetails', roomDetailsRoutes);
 
 // Start the server
+
+app.get('/', (req, res) => {
+  res.send('Hello backend');
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+
 
 
 // const RoomDetails = require('./models/RoomDetails'); 
