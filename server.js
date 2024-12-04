@@ -13,7 +13,22 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+const allowedOrigins = ['http://localhost:3000', 'https://hotelsudarshan.com']; 
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  credentials: true, 
+}));
+
+app.options("*", cors());
+// app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
@@ -37,6 +52,7 @@ app.use('/api/roomdetails', roomDetailsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello backend');
+
 });
 
 app.listen(PORT, () => {
